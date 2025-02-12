@@ -6,6 +6,8 @@ from sklearn.preprocessing import LabelEncoder
 from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import K2Score, BayesianEstimator
 
+from sql import RepositorySQL
+
 
 def boruta_feature_order(data_path, target_column, estimator=10):
     # Separar os dados em características (X) e alvo (y)
@@ -125,6 +127,15 @@ if __name__ == "__main__":
     end_time = time.time()
     execution_time = end_time - start_time
 
+    from pgmpy.readwrite import XMLBIFWriter
+
+    # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
+    file_path = f"result/{file_name}_boruta_best.xmlbif"
+
+    from pgmpy.readwrite import XMLBIFWriter
+    # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
+    file_path = f"result/{file_name}_boruta_best.xmlbif"
+
     # Abre o arquivo em modo de escrita
     with open(f"result/{file_name}_boruta_best.txt", "w") as arquivo:
         # Escreve os prints no arquivo
@@ -132,12 +143,9 @@ if __name__ == "__main__":
         arquivo.write(f'Estrutura dessa ordem: {melhor_estrutura}\n')
         arquivo.write(f'Score obtido dessa ordem: {melhor_score}\n')
         arquivo.write(f'Tempo: {execution_time}\n')
+    with RepositorySQL("sqlite:///./masters.db") as repo:
+        a = repo.upsert("optimization", {"algorithm": "boruta","base": file_name,"target": melhor_target, "order": str(melhor_ordem), "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time, "xmlbit": file_path},keys=["algorithm","base"])
 
-    #P2
-    from pgmpy.readwrite import XMLBIFWriter
-
-    # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
-    file_path = f"result/{file_name}_boruta_best.xmlbif"
 
     # Adicione as CPDs ao modelo
     for cpd in cpds:

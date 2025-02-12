@@ -5,6 +5,8 @@ from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import K2Score, BayesianEstimator
 import time
 
+from sql import RepositorySQL
+
 
 def correlacao_spearman(data, target):
     # Calcula a correlação de Spearman entre a coluna alvo e todas as outras colunas
@@ -103,21 +105,27 @@ if __name__ == "__main__":
     # Tabular as CPDs para o melhor modelo gerado
     cpds = tabular_cpd(melhor_model, df_ordenado)
     end_time = time.time()
-    elapsed_time = end_time - start_time
+    execution_time = end_time - start_time
+
+    # P2
+    from pgmpy.readwrite import XMLBIFWriter
+
+    # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
+    file_path = f"result/{file_name}_spearman.xmlbif"
+
+
     # Abre o arquivo em modo de escrita
     with open(f'result/{file_name}_spearman.txt', "w") as arquivo:
         # Escreve os prints no arquivo
         arquivo.write(f'Melhor ordem gerada com a feature ({melhor_target}): {melhor_ordem}\n')
         arquivo.write(f'Estrutura dessa ordem: {melhor_estrutura}\n')
         arquivo.write(f'Score obtido dessa ordem: {melhor_score}\n')
-        arquivo.write(f'Tempo: {elapsed_time}\n')
+        arquivo.write(f'Tempo: {execution_time}\n')
+
+    with RepositorySQL("sqlite:///./masters.db") as repo:
+        a = repo.upsert("optimization", {"algorithm": "spearman","base": file_name,"target": melhor_target, "order": str(melhor_ordem), "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time, "xmlbit": file_path},keys=["algorithm","base"])
 
 
-    #P2
-    from pgmpy.readwrite import XMLBIFWriter
-
-    # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
-    file_path = f"result/{file_name}_spearman.xmlbif"
 
     # Adicione as CPDs ao modelo
     for cpd in cpds:
