@@ -78,23 +78,21 @@ def tabular_cpd(model, data):
 
 
 if __name__ == "__main__":
-    file_name = "asia"#"hepartwo"
-     # Variáveis para acompanhar a melhor estrutura, melhor ordem, melhor score e a target_column relacionada
+    file_name = "asia"  # "hepartwo"
+    # Variáveis para acompanhar a melhor estrutura, melhor ordem, melhor score e a target_column relacionada
     melhor_estrutura = None
     melhor_ordem = None
     melhor_score = float('-inf')
     melhor_target = None
 
     # Carregar os dados do CSV
-    data = pd.read_csv(f"data/{file_name}.csv")# caminho para o arquivo CSV
+    data = pd.read_csv(f"data/{file_name}.csv")  # caminho para o arquivo CSV
     # Mapear os valores nominais para números inteiros únicos
     data = data.apply(LabelEncoder().fit_transform)
     variables = list(data.columns)
 
     print("DataFrame original:")
     print(list(data))
-
-
 
     start_time = time.time()
 
@@ -133,6 +131,7 @@ if __name__ == "__main__":
     file_path = f"result/{file_name}_boruta_best.xmlbif"
 
     from pgmpy.readwrite import XMLBIFWriter
+
     # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
     file_path = f"result/{file_name}_boruta_best.xmlbif"
 
@@ -143,9 +142,12 @@ if __name__ == "__main__":
         arquivo.write(f'Estrutura dessa ordem: {melhor_estrutura}\n')
         arquivo.write(f'Score obtido dessa ordem: {melhor_score}\n')
         arquivo.write(f'Tempo: {execution_time}\n')
-    with RepositorySQL("sqlite:///./masters.db") as repo:
-        a = repo.upsert("optimization", {"algorithm": "boruta","base": file_name,"feature": melhor_target, "order": str(melhor_ordem), "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time, "xmlbit": file_path},keys=["algorithm","base"])
 
+    with RepositorySQL("sqlite:///./masters.db") as repo:
+        a = repo.upsert("optimization",
+                        {"algorithm": "boruta", "base": file_name, "feature": melhor_target, "order": str(melhor_ordem),
+                         "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time,
+                         "xmlbit": file_path}, keys=["algorithm", "base"])
 
     # Adicione as CPDs ao modelo
     for cpd in cpds:

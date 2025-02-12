@@ -1,7 +1,7 @@
 
 result/
-
-
+masters.db
+masters.sql
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -174,3 +174,5 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+/masters.db
+/masters.sql

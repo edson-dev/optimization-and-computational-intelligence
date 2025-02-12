@@ -9,7 +9,7 @@ import time
 from sql import RepositorySQL
 
 
-def correlacao_pearson(data:DataFrame, target):
+def correlacao_pearson(data: DataFrame, target):
     # Calcula a correlação de Pearson entre a coluna alvo e todas as outras colunas
     correlacoes = data.corr(method='kendall')[target]
 
@@ -66,9 +66,9 @@ def tabular_cpd(model, data):
     cpds = [estimator.estimate_cpd(node) for node in model.nodes]
     return cpds
 
+
 if __name__ == "__main__":
     file_name = "asia"  # "hepartwo"
-
 
     # Variáveis para acompanhar a melhor estrutura, melhor ordem, melhor score e a target_column relacionada
     melhor_estrutura = None
@@ -124,9 +124,10 @@ if __name__ == "__main__":
         arquivo.write(f'Tempo: {execution_time}\n')
 
     with RepositorySQL("sqlite:///./masters.db") as repo:
-        a = repo.upsert("optimization", {"algorithm": "kendall","base": file_name,"feature": melhor_target, "order": str(melhor_ordem), "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time, "xmlbit": file_path},keys=["algorithm","base"])
-
-
+        a = repo.upsert("optimization", {"algorithm": "kendall", "base": file_name, "feature": melhor_target,
+                                         "order": str(melhor_ordem), "structure": str(melhor_estrutura),
+                                         "score": melhor_score, "time": execution_time, "xmlbit": file_path},
+                        keys=["algorithm", "base"])
 
     # Adicione as CPDs ao modelo
     for cpd in cpds:

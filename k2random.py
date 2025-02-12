@@ -1,4 +1,3 @@
-
 from pgmpy.readwrite import XMLBIFWriter
 from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import K2Score, BayesianEstimator
@@ -123,12 +122,12 @@ def tabular_cpd(model, data):
 if __name__ == "__main__":
     file_name = "asia"  # "hepartwo",contact-lenses
     data = pd.read_csv(f'data/{file_name}.csv')
-    best_model = k2(file_name,data, 4)
+    best_model = k2(file_name, data, 4)
     cpds = tabular_cpd(best_model[1], data)
 
     print(f'Modelo: {best_model}')
 
-    #P2
+    # P2
 
     # Carregar os dados do CSV
     data = pd.read_csv(f'data/{file_name}.csv')  # caminho para o arquivo CSV
@@ -141,7 +140,7 @@ if __name__ == "__main__":
     num_iterations = 10
 
     start_time = time.time()
-    models_and_scores, best_model, worst_model, best_score = k2(file_name,data, 4, num_iterations)
+    models_and_scores, best_model, worst_model, best_score = k2(file_name, data, 4, num_iterations)
     cpds_best = tabular_cpd(best_model, data)
     cpds_worst = tabular_cpd(worst_model, data)
     end_time = time.time()
@@ -168,4 +167,8 @@ if __name__ == "__main__":
         file.write(f'Tempo: {execution_time}\n')
 
     with RepositorySQL("sqlite:///./masters.db") as repo:
-        a = repo.upsert("optimization", {"algorithm": "ramdom","base": file_name,"feature": list(best_model.edges)[0][0], "order": str(list(best_model)), "structure": str(best_model.edges), "score": best_score, "time": execution_time, "xmlbit": f'result/{file_name}_random_best.xmlbif'},keys=["algorithm","base"])
+        a = repo.upsert("optimization",
+                        {"algorithm": "random", "base": file_name, "feature": list(best_model.edges)[0][0],
+                         "order": str(list(best_model)), "structure": str(best_model.edges), "score": best_score,
+                         "time": execution_time, "xmlbit": f'result/{file_name}_random_best.xmlbif'},
+                        keys=["algorithm", "base"])
