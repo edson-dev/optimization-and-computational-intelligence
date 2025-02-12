@@ -7,6 +7,8 @@ import pandas as pd
 import random
 import time
 
+from sql import RepositorySQL
+
 
 def k2(filename, dataset, parents_nmax, num_iterations=10):
     variables = list(dataset.columns)
@@ -106,7 +108,7 @@ def k2(filename, dataset, parents_nmax, num_iterations=10):
         print(f"Estrutura: {worst_model.edges}")
         print(f"Score: {worst_score}")
 
-        return models_and_scores, best_model, worst_model
+        return models_and_scores, best_model, worst_model, best_score
 
 
 # Função para encontrar as CPDs
@@ -139,7 +141,7 @@ if __name__ == "__main__":
     num_iterations = 10
 
     start_time = time.time()
-    models_and_scores, best_model, worst_model = k2(file_name,data, 4, num_iterations)
+    models_and_scores, best_model, worst_model, best_score = k2(file_name,data, 4, num_iterations)
     cpds_best = tabular_cpd(best_model, data)
     cpds_worst = tabular_cpd(worst_model, data)
     end_time = time.time()
@@ -160,7 +162,10 @@ if __name__ == "__main__":
 
     # Calcule o tempo decorrido
     elapsed_time = end_time - start_time
-    temp_exec = elapsed_time
+    execution_time = elapsed_time
 
     with open(f'result/{file_name}_random.txt', 'a') as file:  # Abrir o arquivo para atualizar
-        file.write(f'Tempo: {temp_exec}\n')
+        file.write(f'Tempo: {execution_time}\n')
+
+    with RepositorySQL("sqlite:///./masters.db") as repo:
+        a = repo.upsert("optimization", {"algorithm": "ramdom","base": file_name,"feature": list(best_model.edges)[0][0], "order": str(list(best_model)), "structure": str(best_model.edges), "score": best_score, "time": execution_time, "xmlbit": f'result/{file_name}_random_best.xmlbif'},keys=["algorithm","base"])

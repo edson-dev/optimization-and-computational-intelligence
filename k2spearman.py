@@ -123,7 +123,7 @@ if __name__ == "__main__":
         arquivo.write(f'Tempo: {execution_time}\n')
 
     with RepositorySQL("sqlite:///./masters.db") as repo:
-        a = repo.upsert("optimization", {"algorithm": "spearman","base": file_name,"target": melhor_target, "order": str(melhor_ordem), "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time, "xmlbit": file_path},keys=["algorithm","base"])
+        a = repo.upsert("optimization", {"algorithm": "spearman","base": file_name,"feature": melhor_target, "order": str(melhor_ordem), "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time, "xmlbit": file_path},keys=["algorithm","base"])
 
 
 
