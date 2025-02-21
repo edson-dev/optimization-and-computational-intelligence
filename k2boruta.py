@@ -109,7 +109,7 @@ if __name__ == "__main__":
         print(f'Order with feature({target_column}): {variable_target}')
         print(f'Structure: {estrutura}')
         print(f'Score: {score}')
-        print()
+        print(f'HASH: {hashlib.md5(estrutura)}')
 
         # Verificar se esta estrutura é a melhor até agora
         if score > melhor_score:

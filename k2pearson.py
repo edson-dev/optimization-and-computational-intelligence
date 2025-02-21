@@ -5,7 +5,7 @@ from sklearn.preprocessing import LabelEncoder
 from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import K2Score, BayesianEstimator
 import time
-
+import hashlib
 from sql import RepositorySQL
 
 
@@ -111,6 +111,7 @@ if __name__ == "__main__":
     end_time = time.time()
     execution_time = end_time - start_time
     print(f'Tempo: {execution_time}')
+    print(f'HASH: {hashlib.md5(str(estrutura).encode('utf-8')).hexdigest()}')
     # P2
     from pgmpy.readwrite import XMLBIFWriter
 
@@ -129,5 +130,5 @@ if __name__ == "__main__":
 
     # Escreva o modelo no formato XMLBIF
     writer = XMLBIFWriter(melhor_model).write_xmlbif(file_path)
-    
+
     print(f"O arquivo XMLBIF foi gerado com sucesso em: {file_path}")
