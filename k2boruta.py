@@ -68,7 +68,7 @@ def k2(dataset, parents_nmax):
     score = estimator.score(model)
     return estrutura, model, score
 
-
+# Conditional Probability Distribution (CPD)
 def tabular_cpd(model, data):
     for column in data.columns:
         data[column] = pd.Categorical(data[column])
@@ -106,9 +106,9 @@ if __name__ == "__main__":
         estrutura, model, score = k2(df_reordered, 4)
 
         # Imprimir a ordem, estrutura e score para cada coluna alvo
-        print(f'Ordem gerada com a feature {target_column}: {variable_target}')
-        print(f'Estrutura gerada: {estrutura}')
-        print(f'Score obtido: {score}')
+        print(f'Order with feature({target_column}): {variable_target}')
+        print(f'Structure: {estrutura}')
+        print(f'Score: {score}')
         print()
 
         # Verificar se esta estrutura é a melhor até agora
@@ -135,19 +135,11 @@ if __name__ == "__main__":
     # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
     file_path = f"result/{file_name}_boruta_best.xmlbif"
 
-    # Abre o arquivo em modo de escrita
-    with open(f"result/{file_name}_boruta_best.txt", "w") as arquivo:
-        # Escreve os prints no arquivo
-        arquivo.write(f'Melhor ordem gerada com a feature ({melhor_target}): {melhor_ordem}\n')
-        arquivo.write(f'Estrutura dessa ordem: {melhor_estrutura}\n')
-        arquivo.write(f'Score obtido dessa ordem: {melhor_score}\n')
-        arquivo.write(f'Tempo: {execution_time}\n')
-
     with RepositorySQL("sqlite:///./masters.db") as repo:
         a = repo.upsert("optimization",
                         {"algorithm": "boruta", "base": file_name, "feature": melhor_target, "order": str(melhor_ordem),
                          "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time,
-                         "xmlbit": file_path}, keys=["algorithm", "base"])
+                         "xmlbif": file_path}, keys=["algorithm", "base"])
 
     # Adicione as CPDs ao modelo
     for cpd in cpds:

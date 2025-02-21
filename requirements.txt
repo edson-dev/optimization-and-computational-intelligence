@@ -5,3 +5,7 @@ pgmpy
 networkx
 matplotlib
 dataset
+
+
+jupyterlab
+networkx==3.4.2

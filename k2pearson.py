@@ -110,24 +110,17 @@ if __name__ == "__main__":
 
     end_time = time.time()
     execution_time = end_time - start_time
+    print(f'Tempo: {execution_time}')
     # P2
     from pgmpy.readwrite import XMLBIFWriter
 
     # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
     file_path = f"result/{file_name}_pearson.xmlbif"
 
-    # Abre o arquivo em modo de escrita
-    with open(f"result/{file_name}_pearson.txt", "w") as arquivo:
-        # Escreve os prints no arquivo
-        arquivo.write(f'Melhor ordem gerada com a feature ({melhor_target}): {melhor_ordem}\n')
-        arquivo.write(f'Estrutura dessa ordem: {melhor_estrutura}\n')
-        arquivo.write(f'Score obtido dessa ordem: {melhor_score}\n')
-        arquivo.write(f'Tempo: {execution_time}\n')
-
     with RepositorySQL("sqlite:///./masters.db") as repo:
         a = repo.upsert("optimization", {"algorithm": "pearson", "base": file_name, "feature": melhor_target,
                                          "order": str(melhor_ordem), "structure": str(melhor_estrutura),
-                                         "score": melhor_score, "time": execution_time, "xmlbit": file_path},
+                                         "score": melhor_score, "time": execution_time, "xmlbif": file_path},
                         keys=["algorithm", "base"])
 
     # Adicione as CPDs ao modelo
@@ -136,5 +129,5 @@ if __name__ == "__main__":
 
     # Escreva o modelo no formato XMLBIF
     writer = XMLBIFWriter(melhor_model).write_xmlbif(file_path)
-
+    
     print(f"O arquivo XMLBIF foi gerado com sucesso em: {file_path}")

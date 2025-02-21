@@ -115,18 +115,11 @@ if __name__ == "__main__":
 
     # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
     file_path = f"result/{file_name}_kendall.xmlbif"
-    # Abre o arquivo em modo de escrita
-    with open(f"result/{file_name}_kendall.txt", "w") as arquivo:
-        # Escreve os prints no arquivo
-        arquivo.write(f'Melhor ordem gerada com a feature ({melhor_target}): {melhor_ordem}\n')
-        arquivo.write(f'Estrutura dessa ordem: {melhor_estrutura}\n')
-        arquivo.write(f'Score obtido dessa ordem: {melhor_score}\n')
-        arquivo.write(f'Tempo: {execution_time}\n')
 
     with RepositorySQL("sqlite:///./masters.db") as repo:
         a = repo.upsert("optimization", {"algorithm": "kendall", "base": file_name, "feature": melhor_target,
                                          "order": str(melhor_ordem), "structure": str(melhor_estrutura),
-                                         "score": melhor_score, "time": execution_time, "xmlbit": file_path},
+                                         "score": melhor_score, "time": execution_time, "xmlbif": file_path},
                         keys=["algorithm", "base"])
 
     # Adicione as CPDs ao modelo
