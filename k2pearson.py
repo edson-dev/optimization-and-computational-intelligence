@@ -5,7 +5,8 @@ from sklearn.preprocessing import LabelEncoder
 from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import K2Score, BayesianEstimator
 import time
-import hashlib
+
+import viz
 from sql import RepositorySQL
 
 
@@ -111,7 +112,6 @@ if __name__ == "__main__":
     end_time = time.time()
     execution_time = end_time - start_time
     print(f'Tempo: {execution_time}')
-    print(f'HASH: {hashlib.md5(str(estrutura).encode('utf-8')).hexdigest()}')
     # P2
     from pgmpy.readwrite import XMLBIFWriter
 
@@ -121,7 +121,8 @@ if __name__ == "__main__":
     with RepositorySQL("sqlite:///./masters.db") as repo:
         a = repo.upsert("optimization", {"algorithm": "pearson", "base": file_name, "feature": melhor_target,
                                          "order": str(melhor_ordem), "structure": str(melhor_estrutura),
-                                         "score": melhor_score, "time": execution_time, "xmlbif": file_path},
+                                         "score": melhor_score, "time": execution_time, "xmlbif": file_path,
+                                         "hash": viz.file(melhor_ordem,melhor_estrutura)},
                         keys=["algorithm", "base"])
 
     # Adicione as CPDs ao modelo

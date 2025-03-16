@@ -2,13 +2,14 @@ import networkx as nx
 import hashlib
 import matplotlib.pyplot as plt
 
-def img(ord, graph)-> str:
+def file(ord, graph)-> str:
     g = nx.DiGraph()
 
-    #ord = ['lung', 'tub', 'smoke', 'bronc', 'either', 'xray', 'dysp']
-    #graph = [('lung', 'smoke'), ('lung', 'either'), ('tub', 'either'), ('smoke', 'bronc'), ('bronc', 'dysp'),
-    #         ('either', 'xray'), ('either', 'dysp')]
-
+    for i in ord:
+        if i in str(graph):
+            continue
+        else:
+            ord.remove(i)
     g.add_nodes_from(ord)
     g.add_edges_from(graph)
     file = f'dag/{hashlib.md5(str(graph).encode('utf-8')).hexdigest()}.png'

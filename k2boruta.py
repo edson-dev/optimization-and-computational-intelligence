@@ -6,8 +6,9 @@ from sklearn.preprocessing import LabelEncoder
 from pgmpy.models import BayesianNetwork
 from pgmpy.estimators import K2Score, BayesianEstimator
 
+import viz
 from sql import RepositorySQL
-
+import hashlib
 
 def boruta_feature_order(data_path, target_column, estimator=10):
     # Separar os dados em características (X) e alvo (y)
@@ -109,7 +110,6 @@ if __name__ == "__main__":
         print(f'Order with feature({target_column}): {variable_target}')
         print(f'Structure: {estrutura}')
         print(f'Score: {score}')
-        print(f'HASH: {hashlib.md5(estrutura)}')
 
         # Verificar se esta estrutura é a melhor até agora
         if score > melhor_score:
@@ -139,7 +139,8 @@ if __name__ == "__main__":
         a = repo.upsert("optimization",
                         {"algorithm": "boruta", "base": file_name, "feature": melhor_target, "order": str(melhor_ordem),
                          "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time,
-                         "xmlbif": file_path}, keys=["algorithm", "base"])
+                         "xmlbif": file_path,
+                         "hash": viz.file(melhor_ordem,melhor_estrutura)}, keys=["algorithm", "base"])
 
     # Adicione as CPDs ao modelo
     for cpd in cpds:
