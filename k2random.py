@@ -171,5 +171,5 @@ if __name__ == "__main__":
                         {"algorithm": "random", "base": file_name, "feature": list(best_model.edges)[0][0],
                          "order": str(list(best_model)), "structure": str(best_model.edges), "score": best_score,
                          "time": execution_time, "xmlbif": f'result/{file_name}_random_best.xmlbif',
-                         "hash": viz.file(list(best_model),best_model.edges)},
+                         "dag": viz.file(list(best_model),best_model.edges)},
                         keys=["algorithm", "base"])

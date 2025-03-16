@@ -119,7 +119,7 @@ if __name__ == "__main__":
         a = repo.upsert("optimization", {"algorithm": "spearman", "base": file_name, "feature": melhor_target,
                                          "order": str(melhor_ordem), "structure": str(melhor_estrutura),
                                          "score": melhor_score, "time": execution_time, "xmlbif": file_path,
-                                         "hash": viz.file(melhor_ordem, melhor_estrutura)},
+                                         "dag": viz.file(melhor_ordem, melhor_estrutura)},
                         keys=["algorithm", "base"])
 
     # Adicione as CPDs ao modelo
