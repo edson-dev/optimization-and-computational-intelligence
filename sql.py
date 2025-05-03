@@ -15,7 +15,6 @@ class RepositorySQL:
     def __exit__(self, typ, val, traceback):
         ...
 
-
     def upsert(self, table: str, data: dict, keys: list[str] = None) -> dict:
         if not keys:
             keys = ["id"]
@@ -23,4 +22,14 @@ class RepositorySQL:
         r: ResultIter = self.db[table].find(**data)
         filtdict = {k: v for k, v in list(r)[0].items() if not k.startswith('_')}
         return  filtdict if res else {}
+
+    def search(self, table: str, query: dict, limit: int = 10, skip: int = 0) -> list[dict]:
+        limit: int = query.pop("limit", limit)
+        skip: int = query.pop("skip", skip)
+        key = None
+        if table not in self.db.tables:
+            return None
+        t: dataset.Table = self.db[table]
+        results: ResultIter = t.find(**query, _limit=limit, _offset=skip, order_by=[key])
+        return list(results)
 
