@@ -1,3 +1,5 @@
+import asyncio
+
 import pandas as pd
 import time
 from sklearn.ensemble import RandomForestClassifier
@@ -8,9 +10,8 @@ from pgmpy.estimators import K2Score, BayesianEstimator
 
 import viz
 from sql import RepositorySQL
-import hashlib
 
-def boruta_feature_order(data_path, target_column, estimator=10):
+def boruta_feature_order(data, target_column, estimator=10):
     # Separar os dados em características (X) e alvo (y)
     X = data.drop(columns=[target_column])
     y = data[target_column]
@@ -19,7 +20,7 @@ def boruta_feature_order(data_path, target_column, estimator=10):
     rf = RandomForestClassifier(n_estimators=estimator, n_jobs=-1)
 
     # Inicializar o Boruta
-    boruta_selector = BorutaPy(rf, n_estimators='auto', verbose=2)
+    boruta_selector = BorutaPy(rf, n_estimators='auto', verbose=0, max_iter=100)
 
     # Ajustar o Boruta aos dados
     boruta_selector.fit(X.values, y.values)
@@ -78,27 +79,21 @@ def tabular_cpd(model, data):
     return cpds
 
 
-if __name__ == "__main__":
-    file_name = "asia"  # "hepartwo"
+def execute(file_name:str):
     # Variáveis para acompanhar a melhor estrutura, melhor ordem, melhor score e a target_column relacionada
     melhor_estrutura = None
     melhor_ordem = None
     melhor_score = float('-inf')
     melhor_target = None
-
     # Carregar os dados do CSV
     data = pd.read_csv(f"data/{file_name}.csv")  # caminho para o arquivo CSV
     # Mapear os valores nominais para números inteiros únicos
     data = data.apply(LabelEncoder().fit_transform)
     variables = list(data.columns)
-
-    print("DataFrame original:")
-    print(list(data))
-
+    print(f"DataFrame original({len(variables)}):{list(data)}")
     start_time = time.time()
-
     # Loop através de cada coluna, considerando-a como a coluna alvo uma vez
-    for target_column in variables:
+    for i, target_column in enumerate(variables):
         if target_column == "target_column":
             continue
 
@@ -107,9 +102,11 @@ if __name__ == "__main__":
         estrutura, model, score = k2(df_reordered, 4)
 
         # Imprimir a ordem, estrutura e score para cada coluna alvo
+        print(f'{i}/{len(variables)}')
         print(f'Order with feature({target_column}): {variable_target}')
         print(f'Structure: {estrutura}')
         print(f'Score: {score}')
+        print(f'Time: {time.time() - start_time}')
 
         # Verificar se esta estrutura é a melhor até agora
         if score > melhor_score:
@@ -118,35 +115,29 @@ if __name__ == "__main__":
             melhor_score = score
             melhor_target = target_column
             melhor_model = model
-
     # Tabular as CPDs para o melhor modelo gerado
     cpds = tabular_cpd(melhor_model, df_reordered)
-
     end_time = time.time()
     execution_time = end_time - start_time
-
     from pgmpy.readwrite import XMLBIFWriter
-
-    # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
-    file_path = f"result/{file_name}_boruta_best.xmlbif"
-
     from pgmpy.readwrite import XMLBIFWriter
-
     # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
-    file_path = f"result/{file_name}_boruta_best.xmlbif"
-
-    with RepositorySQL("sqlite:///./masters.db") as repo:
+    file_path = f"result/{file_name}_boruta.xml.bif"
+    with RepositorySQL("sqlite:///./networks.db") as repo:
         a = repo.upsert("optimization",
                         {"algorithm": "boruta", "base": file_name, "feature": melhor_target, "order": str(melhor_ordem),
                          "structure": str(melhor_estrutura), "score": melhor_score, "time": execution_time,
                          "xmlbif": file_path,
-                         "dag": viz.file(melhor_ordem,melhor_estrutura)}, keys=["algorithm", "base"])
-
+                         "dag": viz.file(melhor_ordem, melhor_estrutura)}, keys=["algorithm", "base"])
     # Adicione as CPDs ao modelo
     for cpd in cpds:
         melhor_model.add_cpds(cpd)
-
     # Escreva o modelo no formato XMLBIF
     writer = XMLBIFWriter(melhor_model).write_xmlbif(file_path)
-
     print(f"O arquivo XMLBIF foi gerado com sucesso em: {file_path}")
+
+
+if __name__ == "__main__":
+    from main import bases
+    for base in bases:
+        execute(base)

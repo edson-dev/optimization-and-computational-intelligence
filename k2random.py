@@ -9,7 +9,6 @@ import time
 import viz
 from sql import RepositorySQL
 
-
 def k2(filename, dataset, parents_nmax, num_iterations=10):
     variables = list(dataset.columns)
     #file.write(f'Ordem das variáveis iniciais: {variables}\n')
@@ -119,57 +118,50 @@ def tabular_cpd(model, data):
     return cpds
 
 
-if __name__ == "__main__":
-    file_name = "asia"  # "hepartwo",contact-lenses
+def execute(file_name):
     data = pd.read_csv(f'data/{file_name}.csv')
     best_model = k2(file_name, data, 4)
     cpds = tabular_cpd(best_model[1], data)
-
     print(f'Modelo: {best_model}')
-
     # P2
-
     # Carregar os dados do CSV
     data = pd.read_csv(f'data/{file_name}.csv')  # caminho para o arquivo CSV
     # Mapear os valores nominais para números inteiros únicos
     data = data.apply(LabelEncoder().fit_transform)
     variables = list(data.columns)
-
     print("DataFrame original:")
     print(list(data))
     num_iterations = 10
-
     start_time = time.time()
     models_and_scores, best_model, worst_model, best_score = k2(file_name, data, 4, num_iterations)
     cpds_best = tabular_cpd(best_model, data)
     cpds_worst = tabular_cpd(worst_model, data)
     end_time = time.time()
-
     # Adicione as CPDs ao melhor modelo
     for node, cpd in zip(best_model.nodes, cpds_best):
         best_model.add_cpds(cpd)
-
     for node, cpd in zip(worst_model.nodes, cpds_worst):
         worst_model.add_cpds(cpd)
-
     # Salve o modelo em formato XMLBIF
     bif_writer = XMLBIFWriter(best_model)
-    bif_writer.write_xmlbif(f'result/{file_name}_random_best.xmlbif')
-
-    bif_writer = XMLBIFWriter(worst_model)
-    bif_writer.write_xmlbif(f'result/{file_name}_random_worst.xmlbif')
-
+    bif_writer.write_xmlbif(f'result/{file_name}_random.xml.bif')
+    # bif_writer = XMLBIFWriter(worst_model)
+    # bif_writer.write_xmlbif(f'result/{file_name}_random_worst.xmlbif')
     # Calcule o tempo decorrido
     elapsed_time = end_time - start_time
     execution_time = elapsed_time
-
-    #with open(f'result/{file_name}_random.txt', 'a') as file:  # Abrir o arquivo para atualizar
+    # with open(f'result/{file_name}_random.txt', 'a') as file:  # Abrir o arquivo para atualizar
     #    file.write(f'Tempo: {execution_time}\n')
-
-    with RepositorySQL("sqlite:///./masters.db") as repo:
+    with RepositorySQL("sqlite:///./networks.db") as repo:
         a = repo.upsert("optimization",
                         {"algorithm": "random", "base": file_name, "feature": list(best_model.edges)[0][0],
                          "order": str(list(best_model)), "structure": str(best_model.edges), "score": best_score,
-                         "time": execution_time, "xmlbif": f'result/{file_name}_random_best.xmlbif',
-                         "dag": viz.file(list(best_model),best_model.edges)},
+                         "time": execution_time, "xmlbif": f'result/{file_name}_random.xml.bif',
+                         "dag": viz.file(list(best_model), best_model.edges)},
                         keys=["algorithm", "base"])
+
+
+if __name__ == "__main__":
+    from main import bases
+    for base in bases:
+        execute(base)

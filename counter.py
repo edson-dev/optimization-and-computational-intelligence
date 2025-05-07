@@ -4,8 +4,8 @@ from pgmpy.readwrite import XMLBIFReader
 
 def count_edges(base, alg):
     c, a, m, rs = 0, 0, 0, 0
-    base_file = f"bif/{base}.xmlbif"
-    file_path = f"result/{base}_{alg}.xmlbif"
+    base_file = f"bif/{base}.xml.bif"
+    file_path = f"result/{base}_{alg}.xml.bif"
     art = XMLBIFReader(base_file)
     result = XMLBIFReader(file_path)
     #print("art:", art.get_edges())
@@ -33,13 +33,12 @@ def count_edges(base, alg):
         "accuracy": (c / (c + a + m + rs))
     }
     print(response)
-    #with RepositorySQL("sqlite:///./masters.db") as repo:
-    #    a = repo.upsert("optimization", response, keys=["algorithm", "base"])
+    with RepositorySQL("sqlite:///./networks.db") as repo:
+        a = repo.upsert("optimization", response, keys=["algorithm", "base"])
 
 
 if __name__ == "__main__":
-    base = ["asia"]
-    alg = ["boruta","pearson","spearman","kendall","random"]
-    for i in base:
+    from main import bases, alg
+    for i in bases:
         for j in alg:
             count_edges(i, j)

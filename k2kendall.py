@@ -68,25 +68,19 @@ def tabular_cpd(model, data):
     return cpds
 
 
-if __name__ == "__main__":
-    file_name = "asia"  # "hepartwo"
-
+def execute(file_name):
     # Variáveis para acompanhar a melhor estrutura, melhor ordem, melhor score e a target_column relacionada
     melhor_estrutura = None
     melhor_ordem = None
     melhor_score = float('-inf')
     melhor_target = None
-
     data = pd.read_csv(f'data/{file_name}.csv')  # Caminho do dataset
     # Mapear os valores nominais para números inteiros únicos
     data = data.apply(LabelEncoder().fit_transform)
     variables = list(data.columns)
-
     start_time = time.time()
-
     print("DataFrame original:")
     print(list(data))
-
     for target in variables:
         if target == 'target':
             continue
@@ -105,30 +99,29 @@ if __name__ == "__main__":
             melhor_score = score
             melhor_target = target
             melhor_model = model
-
     # Tabular as CPDs para o melhor modelo gerado
     cpds = tabular_cpd(melhor_model, df_ordenado)
-
     end_time = time.time()
     execution_time = end_time - start_time
     # P2
     from pgmpy.readwrite import XMLBIFWriter
-
     # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
-    file_path = f"result/{file_name}_kendall.xmlbif"
-
-    with RepositorySQL("sqlite:///./masters.db") as repo:
+    file_path = f"result/{file_name}_kendall.xml.bif"
+    with RepositorySQL("sqlite:///./networks.db") as repo:
         a = repo.upsert("optimization", {"algorithm": "kendall", "base": file_name, "feature": melhor_target,
                                          "order": str(melhor_ordem), "structure": str(melhor_estrutura),
                                          "score": melhor_score, "time": execution_time, "xmlbif": file_path,
                                          "dag": viz.file(melhor_ordem, melhor_estrutura)},
                         keys=["algorithm", "base"])
-
     # Adicione as CPDs ao modelo
     for cpd in cpds:
         melhor_model.add_cpds(cpd)
-
     # Escreva o modelo no formato XMLBIF
     writer = XMLBIFWriter(melhor_model).write_xmlbif(file_path)
-
     print(f"O arquivo XMLBIF foi gerado com sucesso em: {file_path}")
+
+
+if __name__ == "__main__":
+    from main import bases
+    for base in bases:
+        execute(base)
