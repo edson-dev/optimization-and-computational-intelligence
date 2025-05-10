@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<BIF VERSION="0.3">
+  <NETWORK>
+    <NAME>unknown</NAME>
+    <VARIABLE TYPE="nature">
+      <NAME>Alarm</NAME>
+      <OUTCOME>True</OUTCOME>
+      <OUTCOME>False</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Burglary</NAME>
+      <OUTCOME>True</OUTCOME>
+      <OUTCOME>False</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Earthquake</NAME>
+      <OUTCOME>True</OUTCOME>
+      <OUTCOME>False</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>JohnCalls</NAME>
+      <OUTCOME>True</OUTCOME>
+      <OUTCOME>False</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>MaryCalls</NAME>
+      <OUTCOME>True</OUTCOME>
+      <OUTCOME>False</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <DEFINITION>
+      <FOR>Alarm</FOR>
+      <GIVEN>Burglary</GIVEN>
+      <GIVEN>Earthquake</GIVEN>
+      <TABLE>0.95 0.05 0.94 0.06 0.29 0.71 0.001 0.999 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Burglary</FOR>
+      <TABLE>0.01 0.99 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Earthquake</FOR>
+      <TABLE>0.02 0.98 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>JohnCalls</FOR>
+      <GIVEN>Alarm</GIVEN>
+      <TABLE>0.9 0.1 0.05 0.95 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>MaryCalls</FOR>
+      <GIVEN>Alarm</GIVEN>
+      <TABLE>0.7 0.3 0.01 0.99 </TABLE>
+    </DEFINITION>
+  </NETWORK>
+</BIF>

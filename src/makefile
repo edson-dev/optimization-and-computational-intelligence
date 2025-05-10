@@ -1,0 +1,1 @@
+jupyter lab --notebook-dir="C:\Users\Edson\Documents\optimization-and-computational-intelligence"

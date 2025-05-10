@@ -1,7 +1,7 @@
-dag/
-result/
+src/dag/
+src/result/
 masters.db
-networks.sql
+src/networks.sql
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -175,4 +175,4 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 /masters.db
-/networks.sql
+/src/networks.sql
