@@ -5,24 +5,29 @@ from k2boruta import execute as boruta
 from k2pearson import execute as pearson
 from k2spearman import execute as spearman
 from k2kendall import execute as kendall
+from sql import RepositorySQL
 
 small = ["asia","cancer","earthquake","sachs","survey"]
 medium = ["alarm","barley","child","insurance","mildew","water"]
 large = ["hailfinder","hepar2","win95pts"]
 vlarge = ["andes","diabetes","link","munin1","pathfinder","pigs"]
 massive = ["munin"]
-bases = ["diabetes"]
+bases = ["asia"]
 alg = ["boruta","pearson","spearman","kendall","random"]
 
+db  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
+db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
 if __name__ == "__main__":
     for base in bases:
-        conversor(base)
-        #random(base)
-        #boruta(base)
-        #pearson(base)
-        #spearman(base)
-        #kendall(base)
+        conversor(base,db)
+
+    for base in bases:
+        random(base,db)
+        boruta(base,db)
+        pearson(base,db)
+        spearman(base,db)
+        kendall(base,db)
+
     for base in bases:
         for a in alg:
-            ...
-            #count_edges(base, a)
+            count_edges(base, a,db)

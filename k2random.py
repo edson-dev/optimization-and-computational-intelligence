@@ -118,7 +118,7 @@ def tabular_cpd(model, data):
     return cpds
 
 
-def execute(file_name):
+def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")):
     data = pd.read_csv(f'data/{file_name}.csv')
     best_model = k2(file_name, data, 4)
     cpds = tabular_cpd(best_model[1], data)
@@ -143,8 +143,8 @@ def execute(file_name):
     for node, cpd in zip(worst_model.nodes, cpds_worst):
         worst_model.add_cpds(cpd)
     # Salve o modelo em formato XMLBIF
-    bif_writer = XMLBIFWriter(best_model)
-    bif_writer.write_xmlbif(f'result/{file_name}_random.xml.bif')
+    w = XMLBIFWriter(best_model)
+    w.write_xmlbif(f'result/{file_name}_random.xml.bif')
     # bif_writer = XMLBIFWriter(worst_model)
     # bif_writer.write_xmlbif(f'result/{file_name}_random_worst.xmlbif')
     # Calcule o tempo decorrido
@@ -152,11 +152,11 @@ def execute(file_name):
     execution_time = elapsed_time
     # with open(f'result/{file_name}_random.txt', 'a') as file:  # Abrir o arquivo para atualizar
     #    file.write(f'Tempo: {execution_time}\n')
-    with RepositorySQL("sqlite:///./networks.db") as repo:
+    with db as repo:
         a = repo.upsert("optimization",
                         {"algorithm": "random", "base": file_name, "feature": list(best_model.edges)[0][0],
-                         "order": str(list(best_model)), "structure": str(best_model.edges), "score": best_score,
-                         "time": execution_time, "xmlbif": f'result/{file_name}_random.xml.bif',
+                         "order": str(list(best_model)), "structure": str(best_model.edges), "score": float(best_score),
+                         "time": execution_time, "xmlbif": f'result/{file_name}_random.xml.bif',"file": w.__str__(),
                          "dag": viz.file(list(best_model), best_model.edges)},
                         keys=["algorithm", "base"])
 

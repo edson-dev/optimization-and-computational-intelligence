@@ -20,8 +20,7 @@ class RepositorySQL:
             keys = ["id"]
         res = self.db[table].upsert(data, keys=keys, ensure=True, types={"id": self.db.types.json})
         r: ResultIter = self.db[table].find(**data)
-        filtdict = {k: v for k, v in list(r)[0].items() if not k.startswith('_')}
-        return  filtdict if res else {}
+        return  r
 
     def search(self, table: str, query: dict, limit: int = 10, skip: int = 0) -> list[dict]:
         limit: int = query.pop("limit", limit)

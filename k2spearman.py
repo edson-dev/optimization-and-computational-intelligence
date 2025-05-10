@@ -66,7 +66,7 @@ def tabular_cpd(model, data):
     return cpds
 
 
-def execute(file_name):
+def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")):
     # Variáveis para acompanhar a melhor estrutura, melhor ordem, melhor score e a target_column relacionada
     melhor_estrutura = None
     melhor_ordem = None
@@ -101,21 +101,24 @@ def execute(file_name):
     cpds = tabular_cpd(melhor_model, df_ordenado)
     end_time = time.time()
     execution_time = end_time - start_time
-    # P2
     from pgmpy.readwrite import XMLBIFWriter
     # Especifique o caminho do arquivo onde deseja salvar o arquivo XMLBIF
     file_path = f"result/{file_name}_spearman.xml.bif"
-    with RepositorySQL("sqlite:///./networks.db") as repo:
-        a = repo.upsert("optimization", {"algorithm": "spearman", "base": file_name, "feature": melhor_target,
-                                         "order": str(melhor_ordem), "structure": str(melhor_estrutura),
-                                         "score": melhor_score, "time": execution_time, "xmlbif": file_path,
-                                         "dag": viz.file(melhor_ordem, melhor_estrutura)},
-                        keys=["algorithm", "base"])
     # Adicione as CPDs ao modelo
     for cpd in cpds:
         melhor_model.add_cpds(cpd)
     # Escreva o modelo no formato XMLBIF
-    writer = XMLBIFWriter(melhor_model).write_xmlbif(file_path)
+    w = XMLBIFWriter(melhor_model)
+    w.write_xmlbif(file_path)
+    # P2
+    with db as repo:
+        a = repo.upsert("optimization", {"algorithm": "spearman", "base": file_name, "feature": melhor_target,
+                                         "order": str(melhor_ordem), "structure": str(melhor_estrutura),
+                                         "score": float(melhor_score), "time": execution_time, "xmlbif": file_path,"file": w.__str__(),
+                                         "dag": viz.file(melhor_ordem, melhor_estrutura)},
+                        keys=["algorithm", "base"])
+
+
     print(f"O arquivo XMLBIF foi gerado com sucesso em: {file_path}")
 
 
