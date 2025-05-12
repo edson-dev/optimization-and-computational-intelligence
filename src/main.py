@@ -12,17 +12,17 @@ medium = ["alarm","child","insurance","mildew","water"]#,"barley"]
 large = ["hailfinder","hepar2","win95pts"]
 vlarge = ["andes","diabetes","link","munin1","pathfinder","pigs"]
 massive = ["munin"]
-abases = small + medium + large + vlarge + massive
-bases = medium
+all_bases = [] #small + medium + large + vlarge + massive
+exec_bases = ["win95pts"]
 alg = ["boruta","pearson","spearman","kendall","random"]
 
 db  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
 #db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
 if __name__ == "__main__":
-    for base in abases:
+    for base in all_bases:
         conversor(base,db)
 
-    for base in bases:
+    for base in exec_bases:
         r = db.search("optimization", {"base": base})
         data = {x['algorithm']: dict(x) for x in r}
         if not 'random' in data.keys():
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         if not 'kendall' in data.keys():
             kendall(base,db)
 
-    for base in abases:
+    for base in all_bases:
         r = db.search("optimization",{"base": base})
         if len(r)==6:
             data = {x['algorithm']: dict(x) for x in r}

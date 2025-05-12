@@ -121,6 +121,6 @@ def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./network
 
 
 if __name__ == "__main__":
-    from main import bases
-    for base in bases:
+    from main import exec_bases
+    for base in exec_bases:
         execute(base)

@@ -95,21 +95,13 @@ def tabular_cpd(model, data):
 
 
 def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")):
-    data = pd.read_csv(f'data/{file_name}.csv')
-    best_model = k2(file_name, data, 2)
-    cpds = tabular_cpd(best_model[1], data)
-    print(f'Modelo: {best_model}')
-    # P2
     # Carregar os dados do CSV
     data = pd.read_csv(f'data/{file_name}.csv')  # caminho para o arquivo CSV
     # Mapear os valores nominais para números inteiros únicos
     data = data.apply(LabelEncoder().fit_transform)
-    variables = list(data.columns)
-    print("DataFrame original:")
-    print(list(data))
-    num_iterations = 10
+    print("DataFrame original:",list(data))
     start_time = time.time()
-    models_and_scores, best_model, worst_model, best_score = k2(file_name, data, 4, num_iterations)
+    models_and_scores, best_model, worst_model, best_score = k2(file_name, data, 2)
     cpds_best = tabular_cpd(best_model, data)
     cpds_worst = tabular_cpd(worst_model, data)
     end_time = time.time()
@@ -134,6 +126,6 @@ def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./network
 
 
 if __name__ == "__main__":
-    from main import bases
-    for base in bases:
+    from main import exec_bases
+    for base in exec_bases:
         execute(base)

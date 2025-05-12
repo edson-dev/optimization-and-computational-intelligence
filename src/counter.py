@@ -36,7 +36,7 @@ def count_edges(base, alg,art:str,comp:str, db:RepositorySQL = RepositorySQL("sq
 
 
 if __name__ == "__main__":
-    from main import bases, alg
+    from main import exec_bases, alg
     bases = ["asia"]
     alg = ["pearson"]
     for i in bases:
