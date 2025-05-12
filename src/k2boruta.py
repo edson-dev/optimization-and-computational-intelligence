@@ -32,7 +32,7 @@ def boruta_feature_order(data, target_column, estimator=10):
     return df_reordered
 
 
-def k2(dataset, parents_nmax):
+def k2(dataset, parents_nmax=4):
     estimator = K2Score(dataset)
     model = BayesianNetwork()
     nodes = list(dataset.columns)
@@ -96,7 +96,7 @@ def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./network
 
         df_reordered = boruta_feature_order(data, target_column)
         variable_target = list(df_reordered)
-        estrutura, model, score = k2(df_reordered, 4)
+        estrutura, model, score = k2(df_reordered, 2)
 
         # Imprimir a ordem, estrutura e score para cada coluna alvo
         print(f'{i}/{len(variables)}')

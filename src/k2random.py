@@ -7,7 +7,7 @@ import random
 import time
 from sql import RepositorySQL
 
-def k2(filename, dataset, parents_nmax, num_iterations=10):
+def k2(filename, dataset, parents_nmax=4, num_iterations=10):
     variables = list(dataset.columns)
 
     estimator = K2Score(dataset)
@@ -96,7 +96,7 @@ def tabular_cpd(model, data):
 
 def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")):
     data = pd.read_csv(f'data/{file_name}.csv')
-    best_model = k2(file_name, data, 4)
+    best_model = k2(file_name, data, 2)
     cpds = tabular_cpd(best_model[1], data)
     print(f'Modelo: {best_model}')
     # P2

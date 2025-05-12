@@ -34,7 +34,7 @@ def execute(base:str, db:RepositorySQL = RepositorySQL("sqlite:///./networks.db"
         d = {"algorithm": "art", "base": base,
              "order": str(t:=r.get_variables()),
              "feature": str(t[-1]),
-             "structure": str(r.get_edges()),
+             "structure": str(r.get_model().edges),
              "score": float(score), "time": time.time()-start_time,
              "correct": len(r.get_edges()),
              "additional": 0,

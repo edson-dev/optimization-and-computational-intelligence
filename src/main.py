@@ -8,12 +8,12 @@ from k2kendall import execute as kendall
 from sql import RepositorySQL
 
 small = ["asia","cancer","earthquake","sachs","survey"]
-medium = ["alarm","barley","child","insurance","mildew","water"]
+medium = ["alarm","child","insurance","mildew","water"]#,"barley"]
 large = ["hailfinder","hepar2","win95pts"]
 vlarge = ["andes","diabetes","link","munin1","pathfinder","pigs"]
 massive = ["munin"]
 abases = small + medium + large + vlarge + massive
-bases = small
+bases = medium
 alg = ["boruta","pearson","spearman","kendall","random"]
 
 db  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
@@ -36,7 +36,7 @@ if __name__ == "__main__":
         if not 'kendall' in data.keys():
             kendall(base,db)
 
-    for base in bases:
+    for base in abases:
         r = db.search("optimization",{"base": base})
         if len(r)==6:
             data = {x['algorithm']: dict(x) for x in r}

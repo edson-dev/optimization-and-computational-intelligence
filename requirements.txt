@@ -2,10 +2,9 @@ pandas
 scikit-learn
 boruta
 pgmpy
-networkx
 matplotlib
 dataset
 
 
-jupyterlab
-networkx==3.4.2
+#jupyterlab
+#networkx==3.4.2

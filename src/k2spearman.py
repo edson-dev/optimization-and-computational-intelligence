@@ -20,7 +20,7 @@ def correlacao_spearman(data, target):
     return df_ordenado
 
 
-def k2(dataset, parents_nmax):
+def k2(dataset, parents_nmax=4):
     estimator = K2Score(dataset)
     model = BayesianNetwork()
     nodes = list(dataset.columns)
@@ -83,7 +83,7 @@ def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./network
         # Ordena o DataFrame por correlação
         df_ordenado = correlacao_spearman(data, target)
         variable_target = list(df_ordenado)
-        estrutura, model, score = k2(df_ordenado, 4)
+        estrutura, model, score = k2(df_ordenado, 2)
         print(f'Ordem gerada com a feature ({target}): {variable_target}')
         print(f'Estrutura gerada: {estrutura}')
         print(f'Score obtido: {score}')
