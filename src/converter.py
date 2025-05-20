@@ -21,9 +21,9 @@ def execute(base:str, db:RepositorySQL = RepositorySQL("sqlite:///./networks.db"
             writer.write_xmlbif(output)
     if not os.path.exists(output):
         raise FileNotFoundError(f"The file '{output}' does not exist.")
-    if not os.path.exists(f"data/{base}.csv"):
+    if not os.path.exists(f"bif/{base}.csv"):
         raise FileNotFoundError(f"The file {base}.csv does not exist.")
-    data = pd.read_csv(f"data/{base}.csv")
+    data = pd.read_csv(f"bif/{base}.csv")
     r = XMLBIFReader(output)
     w = XMLBIFWriter(r.get_model())
     model = r.get_model()

@@ -71,20 +71,20 @@ def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./network
     melhor_ordem = None
     melhor_score = float('-inf')
     melhor_target = None
-    data = pd.read_csv(f'data/{file_name}.csv')  # Caminho do dataset
+    data = pd.read_csv(f'bif/{file_name}.csv')  # Caminho do dataset
     # Mapear os valores nominais para números inteiros únicos
     data = data.apply(LabelEncoder().fit_transform)
     variables = list(data.columns)
     start_time = time.time()
-    print("DataFrame original:")
-    print(list(data))
-    for target in variables:
+    print("DataFrame original:",list(data))
+    for i,target in enumerate(variables):
         if target == 'target':
             continue
         # Ordena o DataFrame por correlação
         df_ordenado = correlacao_pearson(data, target)
         variable_target = list(df_ordenado)
         estrutura, model, score = k2(df_ordenado, 2)
+        print(f'\nPEARSON {file_name} {i}/{len(variables)}')
         print(f'Ordem gerada com a feature ({target}): {variable_target}')
         print(f'Estrutura gerada: {estrutura}')
         print(f'Score obtido: {score}')

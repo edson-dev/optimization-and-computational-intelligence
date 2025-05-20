@@ -83,7 +83,7 @@ def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./network
     melhor_score = float('-inf')
     melhor_target = None
     # Carregar os dados do CSV
-    data = pd.read_csv(f"data/{file_name}.csv")  # caminho para o arquivo CSV
+    data = pd.read_csv(f"bif/{file_name}.csv")  # caminho para o arquivo CSV
     # Mapear os valores nominais para números inteiros únicos
     data = data.apply(LabelEncoder().fit_transform)
     variables = list(data.columns)
@@ -99,7 +99,7 @@ def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./network
         estrutura, model, score = k2(df_reordered, 2)
 
         # Imprimir a ordem, estrutura e score para cada coluna alvo
-        print(f'{i}/{len(variables)}')
+        print(f'\nBORUTA {file_name} {i}/{len(variables)}')
         print(f'Order with feature({target_column}): {variable_target}')
         print(f'Structure: {estrutura}')
         print(f'Score: {score}')

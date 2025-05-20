@@ -20,7 +20,7 @@ class RepositorySQL:
             keys = ["id"]
         res = self.db[table].upsert(data, keys=keys, ensure=True, types={"id": self.db.types.json})
         r: ResultIter = self.db[table].find(**data)
-        return  r
+        return  r if r else {}
 
     def search(self, table: str, query: dict, limit: int = 10, skip: int = 0) -> list[dict]:
         limit: int = query.pop("limit", limit)

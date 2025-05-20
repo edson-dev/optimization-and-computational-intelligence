@@ -7,7 +7,7 @@ import random
 import time
 from sql import RepositorySQL
 
-def k2(filename, dataset, parents_nmax=4, num_iterations=10):
+def k2(dataset, parents_nmax=4, num_iterations=10):
     variables = list(dataset.columns)
 
     estimator = K2Score(dataset)
@@ -68,7 +68,7 @@ def k2(filename, dataset, parents_nmax=4, num_iterations=10):
 
         models_and_scores.append((model, score))
         #file.write(f"Iteração {iteration + 1} - Score: {score}\n")
-        print(f"Iteração {iteration + 1} - Score: {score}")
+        print(f"\nRANDOM Iteração {iteration + 1} - Score: {score}")
         #file.write(f'Estrutura: {model.edges}\n')
         print(f'Estrutura: {model.edges}')
        # file.write(
@@ -96,12 +96,12 @@ def tabular_cpd(model, data):
 
 def execute(file_name:str, db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")):
     # Carregar os dados do CSV
-    data = pd.read_csv(f'data/{file_name}.csv')  # caminho para o arquivo CSV
+    data = pd.read_csv(f'bif/{file_name}.csv')  # caminho para o arquivo CSV
     # Mapear os valores nominais para números inteiros únicos
     data = data.apply(LabelEncoder().fit_transform)
     print("DataFrame original:",list(data))
     start_time = time.time()
-    models_and_scores, best_model, worst_model, best_score = k2(file_name, data, 2)
+    models_and_scores, best_model, worst_model, best_score = k2(data, 2)
     cpds_best = tabular_cpd(best_model, data)
     cpds_worst = tabular_cpd(worst_model, data)
     end_time = time.time()
