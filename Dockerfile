@@ -1,4 +1,4 @@
-#docker build -t dag .
+#docker build -t dagbpsk .
 #docker push dag
 #docker run dag
 FROM python:3.12
