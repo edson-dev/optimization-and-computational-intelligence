@@ -14,33 +14,33 @@ medium = ["alarm","child","insurance","water","mildew","barley"]
 large = ["hailfinder","hepar2","win95pts"]
 vlarge = ["andes","diabetes","link","munin1","pathfinder","pigs"]
 massive = ["munin"]
-info_bases = ["hepar2","win95pts"]#small + medium + large + vlarge + massive
+info_bases = small + medium + large + vlarge + massive
 exec_bases = info_bases
 alg = ["boruta","pearson","spearman","kendall","random"]
 
-overide = True
+overide = False
 #db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
 if __name__ == "__main__":
     for base in info_bases:
-        conversor(base,db)
+        conversor(base, db)
 
     for base in exec_bases:
         r = db.search("optimization", {"base": base})
         data = {x['algorithm']: dict(x) for x in r}
         if not 'random' in data.keys() or overide:
-            random(base,db)
+            random(base, db)
         if not 'boruta' in data.keys() or overide:
-            boruta(base,db)
+            boruta(base, db)
         if not 'pearson' in data.keys() or overide:
-            pearson(base,db)
+            pearson(base, db)
         if not 'spearman' in data.keys() or overide:
-            spearman(base,db)
+            spearman(base, db)
         if not 'kendall' in data.keys() or overide:
-            kendall(base,db)
+            kendall(base, db)
 
     for base in info_bases:
         r = db.search("optimization",{"base": base})
         data = {x['algorithm']: dict(x) for x in r}
         for a in alg:
             if a in data.keys():
-                count_edges(base, a,data['art']['file'],data[a]['file'],db)
+                count_edges(base, a, data['art']['file'], data[a]['file'], db)
