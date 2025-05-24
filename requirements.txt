@@ -1,10 +1,7 @@
+torch==2.6.0
 pandas
 scikit-learn
 boruta
 pgmpy
 matplotlib
 dataset
-
-
-#jupyterlab
-#networkx==3.4.2
