@@ -1,4 +1,4 @@
-from counter import count_edges
+#from counter import count_edges
 from converter import execute as conversor
 from k2random import execute as random
 from k2boruta import execute as boruta
@@ -45,4 +45,4 @@ if __name__ == "__main__":
         data = {x['algorithm']: dict(x) for x in r}
         for a in alg:
             if a in data.keys():
-                count_edges(base, a, data['art']['file'], data[a]['file'], db)
+                ...#count_edges(base, a, data['art']['file'], data[a]['file'], db)
