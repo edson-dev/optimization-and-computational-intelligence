@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='utf-8'?>
+<BIF VERSION="0.3">
+  <NETWORK>
+    <NAME>UNTITLED</NAME>
+    <VARIABLE TYPE="nature">
+      <NAME>Cancer</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Dyspnoea</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Pollution</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Smoker</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Xray</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <DEFINITION>
+      <FOR>Cancer</FOR>
+      <TABLE>0.9666666666666667 0.03333333333333333 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Dyspnoea</FOR>
+      <TABLE>0.719047619047619 0.28095238095238095 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Pollution</FOR>
+      <TABLE>0.1 0.9 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Smoker</FOR>
+      <GIVEN>Cancer</GIVEN>
+      <TABLE>0.7216748768472906 0.27832512315270935 0.35714285714285715 0.6428571428571429 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Xray</FOR>
+      <GIVEN>Cancer</GIVEN>
+      <TABLE>0.7807881773399015 0.21921182266009853 0.35714285714285715 0.6428571428571429 </TABLE>
+    </DEFINITION>
+  </NETWORK>
+</BIF>

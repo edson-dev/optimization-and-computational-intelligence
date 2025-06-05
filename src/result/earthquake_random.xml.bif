@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='utf-8'?>
+<BIF VERSION="0.3">
+  <NETWORK>
+    <NAME>UNTITLED</NAME>
+    <VARIABLE TYPE="nature">
+      <NAME>Alarm</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Burglary</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>Earthquake</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>JohnCalls</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <VARIABLE TYPE="nature">
+      <NAME>MaryCalls</NAME>
+      <OUTCOME>0</OUTCOME>
+      <OUTCOME>1</OUTCOME>
+      <PROPERTY>weight = None</PROPERTY>
+    </VARIABLE>
+    <DEFINITION>
+      <FOR>Alarm</FOR>
+      <TABLE>0.9571428571428572 0.04285714285714286 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Burglary</FOR>
+      <GIVEN>Alarm</GIVEN>
+      <TABLE>0.9776119402985075 0.022388059701492536 0.2777777777777778 0.7222222222222222 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>Earthquake</FOR>
+      <TABLE>0.9571428571428572 0.04285714285714286 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>JohnCalls</FOR>
+      <GIVEN>Alarm</GIVEN>
+      <TABLE>0.9577114427860697 0.04228855721393035 0.2777777777777778 0.7222222222222222 </TABLE>
+    </DEFINITION>
+    <DEFINITION>
+      <FOR>MaryCalls</FOR>
+      <GIVEN>Alarm</GIVEN>
+      <TABLE>0.9875621890547264 0.012437810945273632 0.5 0.5 </TABLE>
+    </DEFINITION>
+  </NETWORK>
+</BIF>
