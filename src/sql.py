@@ -1,4 +1,3 @@
-from dataset.util import ResultIter
 import  dataset
 
 
@@ -19,7 +18,7 @@ class RepositorySQL:
         if not keys:
             keys = ["id"]
         res = self.db[table].upsert(data, keys=keys, ensure=True, types={"id": self.db.types.json})
-        r: ResultIter = self.db[table].find(**data)
+        r = self.db[table].find(**data)
         return  r if r else {}
 
     def search(self, table: str, query: dict, limit: int = 10, skip: int = 0) -> list[dict]:
@@ -29,6 +28,6 @@ class RepositorySQL:
         if table not in self.db.tables:
             return None
         t: dataset.Table = self.db[table]
-        results: ResultIter = t.find(**query, _limit=limit, _offset=skip, order_by=[key])
+        results = t.find(**query, _limit=limit, _offset=skip, order_by=[key])
         return list(results)
 
