@@ -7,8 +7,8 @@ from k2spearman import execute as spearman
 from k2kendall import execute as kendall
 from sql import RepositorySQL
 
-db  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
-#  db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
+#db  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
+db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
 overide = False
 
 small = ["asia","cancer","earthquake","sachs","survey"]

@@ -1,8 +1,9 @@
 torch==2.6.0
 sqlalchemy==1.4.54
-pandas==2.2.3
+pandas==2.2.3as
 scikit-learn==1.6.1
 boruta
 pgmpy==0.1.26
 matplotlib
+psycopg2-binary==2.9.10
 dataset
