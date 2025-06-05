@@ -1,5 +1,5 @@
 import  dataset
-
+from __future__ import annotations
 
 class RepositorySQL:
     def __init__(self, address: str = "sqlite:///:memory:", schema: str = None):
