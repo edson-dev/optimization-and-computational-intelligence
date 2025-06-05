@@ -1,5 +1,6 @@
-import  dataset
 from __future__ import annotations
+import  dataset
+
 
 class RepositorySQL:
     def __init__(self, address: str = "sqlite:///:memory:", schema: str = None):
