@@ -3,6 +3,6 @@ sqlalchemy==1.4.54
 pandas
 scikit-learn==1.6.1
 boruta
-pgmpy
+pgmpy==0.1.26
 matplotlib
 dataset
