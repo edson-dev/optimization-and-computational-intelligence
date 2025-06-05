@@ -1,6 +1,6 @@
 torch==2.6.0
 sqlalchemy==1.4.54
-pandas
+pandas==2.2.3
 scikit-learn==1.6.1
 boruta
 pgmpy==0.1.26
