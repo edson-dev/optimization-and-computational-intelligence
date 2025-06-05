@@ -18,7 +18,7 @@ vlarge = ["andes","link","munin1","pathfinder","pigs"] #"diabetes"
 massive = ["munin"]
 info_bases = massive + vlarge + large + medium + small
 
-exec_bases = []#info_bases
+exec_bases = [small+medium]#info_bases
 alg = ["boruta","pearson","spearman","kendall","random"]
 
 
