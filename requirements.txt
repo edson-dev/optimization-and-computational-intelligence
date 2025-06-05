@@ -1,6 +1,7 @@
 torch==2.6.0
+sqlalchemy==1.4.54
 pandas
-scikit-learn
+scikit-learn==1.6.1
 boruta
 pgmpy
 matplotlib
