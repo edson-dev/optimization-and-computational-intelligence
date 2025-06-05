@@ -1,5 +1,5 @@
 #from counter import count_edges
-from converter import execute as conversor
+#from converter import execute as conversor
 from k2random import execute as random
 from k2boruta import execute as boruta
 from k2pearson import execute as pearson
@@ -24,7 +24,7 @@ alg = ["boruta","pearson","spearman","kendall","random"]
 
 if __name__ == "__main__":
     for base in info_bases:
-        conversor(base, db)
+        ...#conversor(base, db)
 
     for base in exec_bases:
         r = db.search("optimization", {"base": base})
