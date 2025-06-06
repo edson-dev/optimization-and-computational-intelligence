@@ -7,8 +7,8 @@ from k2spearman import execute as spearman
 from k2kendall import execute as kendall
 from sql import RepositorySQL
 
-db:RepositorySQL  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
-#db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
+# db:RepositorySQL  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
+db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
 overide = False
 
 small = ["asia","cancer","earthquake","sachs","survey"]
@@ -18,7 +18,7 @@ vlarge = ["andes","link","munin1","pathfinder","pigs"] #"diabetes"
 massive = ["munin"]
 info_bases = massive + vlarge + large + medium + small
 
-exec_bases = small #info_bases
+exec_bases = info_bases
 alg = ["boruta","pearson","spearman","kendall","random"]
 
 
