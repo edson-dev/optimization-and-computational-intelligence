@@ -1,5 +1,5 @@
-#from counter import count_edges
-#from converter import execute as conversor
+from counter import count_edges
+from converter import execute as conversor
 from k2random import execute as random
 from k2boruta import execute as boruta
 from k2pearson import execute as pearson
@@ -7,8 +7,8 @@ from k2spearman import execute as spearman
 from k2kendall import execute as kendall
 from sql import RepositorySQL
 
-#db  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
-db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
+db:RepositorySQL  = RepositorySQL("postgresql://postgres:HBynafIjIv1u6MgH@db.putqkagdjonralzjzvuw.supabase.co:5432/postgres")
+#db:RepositorySQL = RepositorySQL("sqlite:///./networks.db")
 overide = False
 
 small = ["asia","cancer","earthquake","sachs","survey"]
@@ -18,13 +18,13 @@ vlarge = ["andes","link","munin1","pathfinder","pigs"] #"diabetes"
 massive = ["munin"]
 info_bases = massive + vlarge + large + medium + small
 
-exec_bases = small+medium #info_bases
+exec_bases = small #info_bases
 alg = ["boruta","pearson","spearman","kendall","random"]
 
 
 if __name__ == "__main__":
     for base in info_bases:
-        ...#conversor(base, db)
+        conversor(base, db)
 
     for base in exec_bases:
         r = db.search("optimization", {"base": base})
@@ -45,4 +45,4 @@ if __name__ == "__main__":
         data = {x['algorithm']: dict(x) for x in r}
         for a in alg:
             if a in data.keys():
-                ...#count_edges(base, a, data['art']['file'], data[a]['file'], db)
+                count_edges(base, a, data['art']['file'], data[a]['file'], db)
